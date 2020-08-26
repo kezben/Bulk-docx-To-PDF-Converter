@@ -1,23 +1,24 @@
-import comtypes.client, os, sys
+import comtypes.client, os
 from tkinter.filedialog import askdirectory
 import tkinter as tk
 
+# hide root window to not show on loading
 root = tk.Tk()
 root.withdraw()
 
-def convert_to_pdf(_in, _out):
+# function to convert
+def convert_to_pdf(_fin, _fout):
     pdf_format_key = 17
-    file_in = os.path.abspath(_in)
-    file_out = os.path.abspath(_out)
-    worddoc = comtypes.client.CreateObject('word.Application')
-    doc = worddoc.Documents.Open(file_in)
-    doc.SaveAs(file_out, FileFormat = pdf_format_key)
-    doc.Close()
-    worddoc.Quit()
+    file_in = os.path.abspath(_fin)
+    file_out = os.path.abspath(_fout)
+    doc = comtypes.client.CreateObject('word.Application')
+    open = doc.Documents.Open(file_in)
+    open.SaveAs(file_out, FileFormat = pdf_format_key)
+    open.Close()
+    doc.Quit()
 
-#destination = sys.argv[1]
-destination = askdirectory(title='Select Folder')
-#destination = "C:/Users/KellyBennetts/Desktop/tr"
-for file in os.listdir(destination):
+# choose folder to convert and call convert function
+save = askdirectory(title='Select Folder')
+for file in os.listdir(save):
     if ".docx" in file:
-        convert_to_pdf(destination + "\\" + file, destination + "\\" + file.replace(".docx", "") + ".pdf")
+        convert_to_pdf(save + "\\" + file, save + "\\" + file.replace(".docx", "") + ".pdf")
